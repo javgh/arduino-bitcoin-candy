@@ -8,10 +8,14 @@ from PyQt4 import QtCore
 from authproxy import AuthServiceProxy, JSONRPCException
 from merchantgui import MerchantGUI
 from customerdisplay import CustomerDisplay
+from arduino.trigger_arduino import trigger_arduino
 
 class Controller:
     def __init__(self, settings):
         self.bitcoind = AuthServiceProxy(settings['rpc_url'])
+        self.candy_price = settings['candy_price']
+        self.candy_currency = settings['candy_currency']
+        self.arduino_port = settings['arduino_port']
         self.current_address = ""
         self.exchange_rate = 0.0
         self.exchange_rate_source = ""
@@ -88,7 +92,11 @@ class Controller:
 
             self.merchant_gui.update_status(msg)
             self.customer_display.evaluate_java_script('show_payment_received()')
+            trigger_arduino(self.arduino_port)
             self.current_address = ""
+
+    def init_demo(self):
+        self.init_new_transaction(self.candy_price, self.candy_currency)
 
     def toggle_fullscreen_mode(self):
         if not self.customer_display.isFullScreen():

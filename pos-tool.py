@@ -6,6 +6,9 @@ from ticker import Ticker
 
 # check for configuration file
 settings = { 'rpc_url': 'http://rpcuser:rpcpassword@127.0.0.1:8332'
+           , 'arduino_port': '/dev/ttyUSB0'
+           , 'candy_price': 2.00
+           , 'candy_currency': 'USD'
            , 'green_addresses':
                 { '1CDysWzQ5Z4hMLhsj4AKAEFwrgXRC8DqRN': 'Verified by Instawallet.' }
            , 'exchange_rate_ticker':
@@ -15,7 +18,7 @@ settings = { 'rpc_url': 'http://rpcuser:rpcpassword@127.0.0.1:8332'
                 , 'interval': 5
                 }
            }
-conffile = os.path.expanduser('~/.greenaddress-pos-tool')
+conffile = os.path.expanduser('~/.arduino-bitcoin-candyrc')
 if os.path.isfile(conffile):
     try:
         with open(conffile, 'r') as f:

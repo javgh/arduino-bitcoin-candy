@@ -10,62 +10,36 @@ class MerchantGUI(QtGui.QWidget):
     def init_ui(self):
         self.status = QtGui.QLabel()
         self.status.setWordWrap(True)
-        self.status.setMinimumHeight(100)
+        self.status.setMinimumHeight(60)
+        self.status.setMinimumWidth(400)
         self.status.setText("System ready.")
-
-        amount = QtGui.QLabel()
-        amount.setText("Amount:")
-        self.edit = QtGui.QLineEdit()
-        validator = QtGui.QDoubleValidator(self.edit)
-        self.edit.setValidator(validator)
-
-        self.combo = QtGui.QComboBox()
-        self.combo.addItem("BTC")
-        self.combo.addItem("USD")
 
         self.rate = QtGui.QLabel()
         self.rate.setText("Current exchange rate: ...        ")
 
-        show = QtGui.QPushButton("Update display")
-        self.connect(show, QtCore.SIGNAL('clicked()'), self.show_on_clicked)
+        init_demo = QtGui.QPushButton("Init demo")
+        self.connect(init_demo, QtCore.SIGNAL('clicked()'), self.init_demo_on_clicked)
 
         fullscreen = QtGui.QPushButton("Toggle fullscreen")
         self.connect(fullscreen, QtCore.SIGNAL('clicked()'), self.fullscreen_on_clicked)
 
-        clear = QtGui.QPushButton("Clear display")
-        self.connect(clear, QtCore.SIGNAL('clicked()'), self.clear_on_clicked)
-
         hbox1 = QtGui.QHBoxLayout()
-        hbox1.addWidget(amount)
-        hbox1.addWidget(self.edit)
-        hbox1.addWidget(self.combo)
-        hbox1.addWidget(self.rate)
-
-        hbox2 = QtGui.QHBoxLayout()
-        hbox2.addWidget(show)
-        hbox2.addWidget(fullscreen)
-        hbox2.addWidget(clear)
+        hbox1.addWidget(init_demo)
+        hbox1.addWidget(fullscreen)
 
         vbox = QtGui.QVBoxLayout()
         vbox.addLayout(hbox1)
-        vbox.addLayout(hbox2)
+        vbox.addWidget(self.rate)
         vbox.addWidget(self.status)
 
         self.setLayout(vbox)
         self.setWindowTitle('Point of Sale System - Backend')
 
-    def show_on_clicked(self):
-        if self.edit.text() == "":
-            amount = 0
-        else:
-            amount = float(self.edit.text())
-        self.controller.init_new_transaction(amount, self.combo.currentText())
-
     def fullscreen_on_clicked(self):
         self.controller.toggle_fullscreen_mode()
 
-    def clear_on_clicked(self):
-        self.controller.clear_customer_display()
+    def init_demo_on_clicked(self):
+        self.controller.init_demo()
 
     def update_status(self, message):
         self.status.setText(message)
